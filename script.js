@@ -38,6 +38,12 @@ function whichQuiz() {
 
 function startQuiz() {
     console.log("start!");
+    
+    width = 0;
+    numCorrect = 0;
+    progressBar.classList.add('hide');
+    finalGrade.classList.add('hide');
+    
 
     startBtn.classList.add("hide");
     homeBtn.classList.add("hide");
@@ -77,39 +83,45 @@ function resetState() {
     while (answerBtns.firstChild) {
         answerBtns.removeChild(answerBtns.firstChild);
     }
+    
 }
 
 function selectAnswer(e) {
     const selectedButton = e.target;
-    const correct = selectedButton.dataset.correct;
-
+    const correct = selectedButton.dataset.correct;    
    
+    
     if (correct) {
+        selectedButton.disabled = true;
+
         progressBar.style.transition = 0.5 + "s";
         progressBar.classList.remove('hide');
-
         
         numCorrect += 1;
         width += 20;
         progressBar.style.backgroundColor = 'green';
         
         progressBar.style.width = width + "%";
-        
-    }
 
+    }
+    
     setStatusClass(document.body, correct);
     Array.from(answerBtns.children).forEach((button) => {
         setStatusClass(button, button.dataset.correct);
+        button.disabled = true;
     });
 
     if ((currentQuestionIndex + 1) < shuffledQuestions.length) {
         nextBtn.classList.remove("hide");
     } else {
+        finalGrade.classList.remove('hide');
         finalGrade.innerText = "Quiz Grade: " + numCorrect + "/" + 5; 
         startBtn.innerText = "Restart";
         startBtn.classList.remove("hide");
         homeBtn.classList.remove("hide");
+        
     }
+    
 }
 
 function setStatusClass(element, isCorrect) {
@@ -118,13 +130,10 @@ function setStatusClass(element, isCorrect) {
     if (isCorrect) {    
         element.classList.add("correct");
     } else {
-        
         element.classList.add("wrong");
     }
 }
-function setProgressBarWidth() {
 
-}
 
 function clearStatusClass(element) {
     element.classList.remove("correct");

@@ -104,6 +104,7 @@ button, a {
 }
 
 button:hover, a:hover {
+    cursor: pointer;
     opacity: 1;
 }
 
